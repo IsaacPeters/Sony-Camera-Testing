@@ -6,7 +6,7 @@ var SonyCamera = require('sony-camera');
 var cam = new SonyCamera();
 
 cam.on('update', function(param, data) {
-    io.emit('update', param, value);
+    io.emit('update', param, data);
 });
 
 cam.on('liveviewJpeg', function(image) {
@@ -20,6 +20,7 @@ cam.connect();
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/static/index.html');
 });
+
 app.get('/jquery.js', function(req, res){
     res.sendFile(__dirname + '/static/jquery.js');
 });
