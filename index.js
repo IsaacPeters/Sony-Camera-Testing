@@ -3,7 +3,10 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var SonyCamera = require('sony-camera');
 
+
 var cam = new SonyCamera();
+
+
 
 cam.on('update', function(param, data) {
     io.emit('update', param, data);
@@ -25,10 +28,15 @@ app.get('/jquery.js', function(req, res){
     res.sendFile(__dirname + '/static/jquery.js');
 });
 
+app.get('/tracking.js', function(req, res){
+    res.sendFile(__dirname + '/static/tracking.js');
+});
+
 io.on('connection', function(socket){
     io.emit('params', cam.params);
     socket.on('capture', function(){
         cam.capture(true, function(err, name, image) {
+            console.log("Capturing with error ", err, name, image);
             if(err) {
                 return io.emit("status", "Error: " + err);
             }
